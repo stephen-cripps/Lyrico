@@ -11,9 +11,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lyrico.Application", "Lyric
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lyrico.Domain", "Lyrico.Domain\Lyrico.Domain.csproj", "{28A5CFF4-9F50-48B0-B5A5-6700E6CB739D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lyrico.Artists", "Lyrico.Artists\Lyrico.Artists.csproj", "{DECA4541-4BC6-4D40-A32A-CD5FB06AF08B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lyrico.MusicBrainz", "Lyrico.Artists\Lyrico.MusicBrainz.csproj", "{DECA4541-4BC6-4D40-A32A-CD5FB06AF08B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lyrico.Lyrics", "Lyrico.Lyrics\Lyrico.Lyrics.csproj", "{F9D85260-CC80-4710-BBB4-23C98173DD37}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lyrico.Lyricsovh", "Lyrico.Lyrics\Lyrico.Lyricsovh.csproj", "{F9D85260-CC80-4710-BBB4-23C98173DD37}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
