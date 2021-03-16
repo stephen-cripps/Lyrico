@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Lyrico.Lyrics
+﻿namespace Lyrico.Lyrics
 {
     public class Class1
     {
