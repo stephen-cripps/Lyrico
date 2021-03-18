@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Lyrico.Domain
 {
@@ -19,5 +20,7 @@ namespace Lyrico.Domain
             Name = name;
             Releases = releases;
         }
+
+
     }
 }

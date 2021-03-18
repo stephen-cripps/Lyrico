@@ -4,6 +4,6 @@ namespace Lyrico.Application.Services
 {
     public interface ILyricService
     {
-        Task<uint> GetLyricCountAsync(string artistName, string songName);
+        Task<uint?> GetLyricCountAsync(string artistName, string songName);
     }
 }

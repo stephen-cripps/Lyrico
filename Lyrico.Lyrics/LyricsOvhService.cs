@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using Lyrico.Application.Services;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
 using Options = Lyrico.Lyricsovh.Options;
 
 namespace Lyrico.Lyricsovh
@@ -18,22 +20,46 @@ namespace Lyrico.Lyricsovh
             client = new HttpClient
             {
                 BaseAddress = new Uri(options.Value.BaseUrl),
-                Timeout = TimeSpan.ParseExact(options.Value.Timeout, "ss", null)
+                Timeout = TimeSpan.FromSeconds(300)
             };
         }
 
-        public Task<uint> GetLyricCountAsync(string artistName, string songName)
+        public async Task<uint?> GetLyricCountAsync(string artistName, string songName)
         {
-            GetLyrics(artistName, songName);
-            //If a song isn't found, its not handled it just times out. Use this https://docs.microsoft.com/en-us/dotnet/api/system.net.http.httpclient.timeout?view=net-5.0
-            throw new NotImplementedException();
+            string lyrics;
+            try
+            {
+                lyrics = await GetLyrics(artistName, songName);
+            }
+            catch (Exception e)
+            {
+                 Console.WriteLine($"Error getting lyrics for {songName}: {e.Message}");
+                return null;
+            }
+
+            var split = lyrics.Split(new char[0], StringSplitOptions.RemoveEmptyEntries);
+
+            var count = split.Length;
+
+            Console.WriteLine(songName + ": " + count);
+
+            return (uint?)count;
         }
 
         async Task<string> GetLyrics(string artistName, string songName)
         {
-            var response = await client.GetAsync($"{artistName}/{songName}");
+            var path = $"{artistName}/{songName}";
+            var response = await client.GetAsync(path);
 
-            return await response.Content.ReadAsStringAsync();
+            if (!response.IsSuccessStatusCode)
+                throw new HttpRequestException(response.ReasonPhrase);
+
+            return JsonConvert.DeserializeObject<LyricResponse>(await response.Content.ReadAsStringAsync()).Lyrics;
+        }
+
+        class LyricResponse
+        {
+            public string Lyrics { get; set; }
         }
     }
 }

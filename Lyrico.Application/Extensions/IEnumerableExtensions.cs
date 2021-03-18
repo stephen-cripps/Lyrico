@@ -5,23 +5,6 @@ namespace Lyrico.Application.Extensions
 {
     public static class EnumerableExtensions
     {
-        public static IEnumerable<uint> Mode(this IEnumerable<uint> enumerable)
-        {
-            var cloned = new List<uint>(enumerable);
-
-            if (!cloned.Any())
-                return null;
-
-            var orderedGroups = cloned.GroupBy(i => i)
-                .OrderByDescending(g => g.Count())
-                .ToList();
-
-            var modalCount = orderedGroups.First().Count();
-
-            return orderedGroups.Where(g => g.Count() == modalCount)
-                .Select(g => g.Key);
-        }
-
         public static double? Median(this IEnumerable<uint> enumerable)
         {
             var cloned = new List<uint>(enumerable)

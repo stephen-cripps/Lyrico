@@ -33,51 +33,102 @@ namespace Lyrico.MusicBrainz
 
         public async Task<Artist> GetArtistAsync(string artistName)
         {
-            //Weird error being thrown here, doesn't seem to affect functionality
-            var artistId = await SearchArtist(artistName);
-            if (artistId == null)
+            var artist = await SearchArtist(artistName);
+
+            if (artist == null)
                 return null;
 
-            var artist = await GetArtist(artistId);
+            Console.WriteLine("Artist Found");
 
+            artist.Releases = (await GetReleases(artist.Id)).Distinct(new ReleaseNameComparer());
+            Console.WriteLine("Releases Read");
+
+            // I'm removing duplicates to make debugging faster
             foreach (var release in artist.Releases)
             {
-                release.Media = await GetReleaseMedia(release.Id);
+                release.Recordings = await GetRecordings(release.Id);
+                Console.WriteLine($"{release.Title} Tracklist Read");
             }
 
             return mapper.Map<Artist>(artist);
         }
 
-        async Task<string> SearchArtist(string artistName)
+        async Task<ArtistDto> SearchArtist(string artistName)
         {
             var path = $"artist?query=artist:{artistName}&fmt=json&limit=1";
 
             var response = await client.GetAsync(path);
 
             if (!response.IsSuccessStatusCode)
-                throw new HttpRequestException(response.ReasonPhrase); //This is probably not the best way to do this
+                throw new HttpRequestException(response.ReasonPhrase);
 
             var deserialisedResult = JsonConvert.DeserializeObject<ArtistSearchResult>(await response.Content.ReadAsStringAsync());
 
             var firstArtist = deserialisedResult.Artists.FirstOrDefault(a => a.Name == artistName);
 
-            return firstArtist?.Id;
+            return firstArtist;
         }
 
-        async Task<ArtistDto> GetArtist(string artistId)
-        {
-            var path = $"artist/{artistId}?inc=releases&fmt=json";
-            var response = await client.GetAsync(path);
 
-            return JsonConvert.DeserializeObject<ArtistDto>(await response.Content.ReadAsStringAsync());
+        async Task<IEnumerable<ReleaseDto>> GetReleases(string artistId)
+        {
+            var offset = 0;
+            var releaseCount = 1;
+
+            var releases = new List<ReleaseDto>();
+            while (releases.Count < releaseCount)
+            {
+                System.Threading.Thread.Sleep(1000); //To avoid rate limiting
+
+                //I'm looking at just official albums to keep the number of results down 
+                // I don't think there's a way to ignore live albums without doing extra calls to the bakend
+                var path = $"release?artist={artistId}&type=album&status=official&fmt=json&offset={offset}";
+                var response = await client.GetAsync(path);
+
+                if (!response.IsSuccessStatusCode)
+                    throw new HttpRequestException(response.ReasonPhrase);
+
+                var result = JsonConvert.DeserializeObject<ReleaseSearchResult>(await response.Content.ReadAsStringAsync());
+
+                releases.AddRange(result.Releases);
+                releaseCount = result.ReleaseCount;
+                offset += 25;
+            }
+
+            return releases;
         }
 
-        async Task<IEnumerable<MediaDto>> GetReleaseMedia(string releaseId)
+        async Task<IEnumerable<RecordingDto>> GetRecordings(string releaseId)
         {
-            var path = $"release/{releaseId}?inc=recordings&fmt=json";
-            var response = await client.GetAsync(path);
-            var release = JsonConvert.DeserializeObject<ReleaseDto>(await response.Content.ReadAsStringAsync());
-            return release.Media;
+            var offset = 0;
+            var recordingCount = 1;
+
+            var recordings = new List<RecordingDto>();
+            while (recordings.Count < recordingCount)
+            {
+                System.Threading.Thread.Sleep(1000); //To avoid rate limiting
+
+                var path = $"recording?release={releaseId}&fmt=json&offset={offset}";
+                var response = await client.GetAsync(path);
+
+                if (!response.IsSuccessStatusCode)
+                    throw new HttpRequestException(response.ReasonPhrase);
+
+                var result = JsonConvert.DeserializeObject<RecordingSearchResult>(await response.Content.ReadAsStringAsync());
+
+                recordings.AddRange(result.Recordings);
+                recordingCount = result.RecordingCount;
+                offset += 25;
+            }
+
+            return recordings; 
+        }
+
+        class ReleaseNameComparer : IEqualityComparer<ReleaseDto>
+        {
+            public bool Equals(ReleaseDto x, ReleaseDto y) => x.Title == y.Title;
+
+            public int GetHashCode(ReleaseDto obj) => obj.Title.GetHashCode();
         }
     }
 }

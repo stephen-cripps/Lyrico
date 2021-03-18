@@ -19,7 +19,6 @@ namespace Lyrico.Domain
 
             Name = name;
             TrackList = trackList ?? throw new ArgumentNullException(nameof(trackList));
-            Year = year;
         }
     }
 }

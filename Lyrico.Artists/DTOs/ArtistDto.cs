@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace Lyrico.MusicBrainz.DTOs
 {
@@ -14,17 +15,13 @@ namespace Lyrico.MusicBrainz.DTOs
     public class ReleaseDto
     {
         public string Title { get; set; }
+
         public string Id { get; set; }
-        public IEnumerable<MediaDto> Media { get; set; }
-        public string Date { get; set; }
+
+        public IEnumerable<RecordingDto> Recordings { get; set; }
     }
 
-    public class MediaDto
-    {
-        public IEnumerable<TrackDto> Tracks { get; set; }
-    }
-
-    public class TrackDto
+    public class RecordingDto
     {
         public string Title { get; set; }
     }

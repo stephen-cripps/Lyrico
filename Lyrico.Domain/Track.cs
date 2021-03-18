@@ -9,7 +9,7 @@ namespace Lyrico.Domain
 
         public string Name { get; private set; }
 
-        public uint Wordcount { get; set; }
+        public uint? Wordcount { get; set; }
 
         public Track(string name)
         {

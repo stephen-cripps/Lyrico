@@ -32,8 +32,8 @@ namespace Lyrico.Api
             services.AddTransient<IArtistService, MusicBrainzService>()
                 .AddTransient<ILyricService, LyricsOvhService>();
 
-            services.Configure<MusicBrainz.Options>(Configuration.GetSection("MusicBrainz"));
-            services.Configure<LyricsOvhService.Options>(Configuration.GetSection("MusicBrainz"));
+            services.Configure<MusicBrainz.DependencyInjection.Options>(Configuration.GetSection("MusicBrainz"));
+            services.Configure<Lyricsovh.Options>(Configuration.GetSection("LyricsOvh"));
 
             services.AddAutoMapper(assembly);
             var mappingConfig = new MapperConfiguration(mc =>
