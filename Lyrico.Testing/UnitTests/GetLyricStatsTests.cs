@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using Lyrico.Application;
@@ -10,19 +12,19 @@ using Xunit;
 
 namespace Lyrico.Testing.UnitTests
 {
-    public class ReadLyricStatsCompleteTests
+    public class GetLyricStatsTests
     {
         readonly Mock<IArtistService> mockArtistService = new Mock<IArtistService>();
         readonly Mock<ILyricService> mockLyricService = new Mock<ILyricService>();
         readonly string artistName;
-        readonly ReadLyricStatsComplete.Request request;
-        readonly ReadLyricStatsComplete.Handler handler;
+        readonly GetLyricStats.Request request;
+        readonly GetLyricStats.Handler handler;
 
-        public ReadLyricStatsCompleteTests()
+        public GetLyricStatsTests()
         {
               artistName = "Test Artist";
-             handler = new ReadLyricStatsComplete.Handler(mockArtistService.Object, mockLyricService.Object);
-             request = new ReadLyricStatsComplete.Request() { ArtistName = artistName };
+             handler = new GetLyricStats.Handler(mockArtistService.Object, mockLyricService.Object);
+             request = new GetLyricStats.Request() { ArtistName = artistName };
         }
 
         [Fact]
@@ -118,6 +120,19 @@ namespace Lyrico.Testing.UnitTests
             //Assert
             Assert.Equal("'Test Artist' could not be found", exception.Message);
 
+        }
+
+        [Fact]
+        public async Task Handle_ArtistServiceNotAvailable_ThrowsServiceUnavailableException()
+        {
+            //Arrange 
+            mockArtistService.Setup(m => m.GetArtistAsync(artistName)).Throws(new HttpRequestException());
+
+            //Test
+            var exception = await Assert.ThrowsAsync<ServiceUnavailableException>(() => handler.Handle(request, new CancellationToken()));
+
+            //Assert
+            Assert.Equal("An error occurred contacting the service. Service: IArtistServiceProxy", exception.Message);
         }
     }
 }

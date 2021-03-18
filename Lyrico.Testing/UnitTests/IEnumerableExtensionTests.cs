@@ -5,7 +5,7 @@ using Xunit;
 
 namespace Lyrico.Testing.UnitTests
 {
-    public class IEnumerableExtensionTests
+    public class EnumerableExtensionTests
     {
         [Theory]
         [InlineData(new uint[] { 1, 2, 6, 5, 8, 7, 5, 9, 6, 3, 2, 4, 5, 5, 5, 5, 5, 5, 5, 5 }, 5)]

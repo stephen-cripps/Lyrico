@@ -1,10 +1,16 @@
+using AutoMapper;
+using Lyrico.Application;
+using Lyrico.Application.Services;
+using Lyrico.Lyricsovh;
+using Lyrico.MusicBrainz;
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-namespace Lyrico
+namespace Lyrico.Api
 {
     public class Startup
     {
@@ -19,6 +25,22 @@ namespace Lyrico
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+
+            var assembly = typeof(GetLyricStats).Assembly;
+            services.AddMediatR(assembly);
+
+            services.AddTransient<IArtistService, MusicBrainzService>()
+                .AddTransient<ILyricService, LyricsOvhService>();
+
+            services.Configure<MusicBrainz.Options>(Configuration.GetSection("MusicBrainz"));
+            services.Configure<LyricsOvhService.Options>(Configuration.GetSection("MusicBrainz"));
+
+            services.AddAutoMapper(assembly);
+            var mappingConfig = new MapperConfiguration(mc =>
+            {
+                mc.AddProfile(new MusicBrainz.DependencyInjection.MappingProfile());
+            });
+            services.AddSingleton(mappingConfig.CreateMapper());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

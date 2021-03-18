@@ -4,8 +4,10 @@ namespace Lyrico.Domain
 {
     public class Track
     {
+        Track() 
+        { }
 
-        public string Name { get; }
+        public string Name { get; private set; }
 
         public uint Wordcount { get; set; }
 

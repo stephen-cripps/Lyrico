@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
+using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using Lyrico.Application.Exceptions;
@@ -11,7 +13,7 @@ using MediatR;
 
 namespace Lyrico.Application
 {
-    public class ReadLyricStatsComplete
+    public class GetLyricStats
     {
         public class Request : IRequest<Result>
         {
@@ -48,7 +50,7 @@ namespace Lyrico.Application
                     .Select(t => t.Wordcount)
                     .ToList();
 
-                if(!wordCounts.Any())
+                if (!wordCounts.Any())
                     return new Result();
 
                 var result = new Result
@@ -59,7 +61,7 @@ namespace Lyrico.Application
                 };
 
                 result.Variance = wordCounts.PopulationVariance(result.Mean);
-                result.StandardDeviation = result.Variance == null ? null : (double?) Math.Sqrt((double) result.Variance);
+                result.StandardDeviation = result.Variance == null ? null : (double?)Math.Sqrt((double)result.Variance);
 
                 result.MeanByRelease = artist.Releases.ToDictionary(r => r.Name,
                     r => r.TrackList.Select(t => t.Wordcount).Average(t => t));
@@ -67,14 +69,17 @@ namespace Lyrico.Application
                 return result;
             }
 
-            //The difference between the two definitions is somewhat subtle. If you have a complete population of values, in other words values for every member of a group of values, then you use the second population definition. If you have only a subset of the values for a population and you want to deduce something about the population as a whole (for example, you only polled 10% of the electorate), then you use the population definition. For more on this issue, see these posts at eard Statistics and Libweb.
-            //http://csharphelper.com/blog/2015/12/make-an-extension-method-that-calculates-standard-deviation-in-c/
-            //Look up in general polling calculation techniques
-            //https://www.calculatorsoup.com/calculators/statistics/variance-calculator.php
-
             async Task<Artist> InitialiseArtist(string name)
             {
-                var artist = await artistService.GetArtistAsync(name);
+                Artist artist;
+                try
+                {
+                    artist = await artistService.GetArtistAsync(name);
+                }
+                catch (HttpRequestException)
+                {
+                    throw new ServiceUnavailableException(artistService.GetType().Name);
+                }
 
                 if (artist == null)
                     throw new ArtistNotFoundException(name);
@@ -83,7 +88,7 @@ namespace Lyrico.Application
 
                 foreach (var track in tracks)
                 {
-                    track.Wordcount = await lyricService.GetLyricCountAsync(track.Name);
+                    track.Wordcount = await lyricService.GetLyricCountAsync(artist.Name, track.Name);
                 }
 
                 return artist;

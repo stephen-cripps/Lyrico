@@ -5,8 +5,11 @@ namespace Lyrico.Domain
 {
     public class Artist
     {
-        public string Name { get; }
-        public IEnumerable<Release> Releases { get; }
+        Artist()
+        {}
+
+        public string Name { get; private set; }
+        public IEnumerable<Release> Releases { get; private set; }
 
         public Artist(string name, IEnumerable<Release> releases)
         {
