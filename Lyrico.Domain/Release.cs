@@ -9,10 +9,9 @@ namespace Lyrico.Domain
         { }
 
         public string Name { get; private set; }
-        public int Year { get; private set; }
         public IEnumerable<Track> TrackList { get; private set; }
      
-        public Release(string name, IEnumerable<Track> trackList, int year)
+        public Release(string name, IEnumerable<Track> trackList)
         {
             if (string.IsNullOrWhiteSpace(name))
                 throw new ArgumentException("Value cannot be null or whitespace.", nameof(name));

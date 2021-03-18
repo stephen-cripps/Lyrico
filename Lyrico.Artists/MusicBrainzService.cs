@@ -1,12 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using System.Net;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
-using System.Web;
 using AutoMapper;
 using Lyrico.Application.Services;
 using Lyrico.Domain;
@@ -126,9 +122,9 @@ namespace Lyrico.MusicBrainz
 
         class ReleaseNameComparer : IEqualityComparer<ReleaseDto>
         {
-            public bool Equals(ReleaseDto x, ReleaseDto y) => x.Title == y.Title;
+            public bool Equals(ReleaseDto x, ReleaseDto y) => string.Equals(x.Title, y.Title, StringComparison.CurrentCultureIgnoreCase);
 
-            public int GetHashCode(ReleaseDto obj) => obj.Title.GetHashCode();
+            public int GetHashCode(ReleaseDto obj) => obj.Title.ToLower().GetHashCode();
         }
     }
 }

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -42,8 +41,8 @@ namespace Lyrico.Testing.UnitTests
                 {new Track(trackNames[3]), new Track(trackNames[4]), new Track(trackNames[5]), new Track("Lyrics Not Found")};
             var releases = new List<Release>()
             {
-                new Release("R1", tracks1, 2021),
-                new Release("R2", tracks2, 2021)
+                new Release("R1", tracks1),
+                new Release("R2", tracks2)
             };
             var artist = new Artist(artistName, releases);
             mockArtistService.Setup(m => m.GetArtistAsync(artistName)).ReturnsAsync(artist);
@@ -76,8 +75,8 @@ namespace Lyrico.Testing.UnitTests
             //Arrange 
             var releases = new List<Release>()
             {
-                new Release("R1", new List<Track>(), 2021),
-                new Release("R2", new List<Track>(), 2021)
+                new Release("R1", new List<Track>()),
+                new Release("R2", new List<Track>())
             };
             var artist = new Artist(artistName, releases);
             mockArtistService.Setup(m => m.GetArtistAsync(artistName)).ReturnsAsync(artist);
@@ -122,8 +121,8 @@ namespace Lyrico.Testing.UnitTests
                 {new Track(trackNames[3]), new Track(trackNames[4]), new Track(trackNames[5])};
             var releases = new List<Release>()
             {
-                new Release("R1", tracks1, 2021),
-                new Release("R2", tracks2, 2021)
+                new Release("R1", tracks1),
+                new Release("R2", tracks2)
             };
             var artist = new Artist(artistName, releases);
             mockArtistService.Setup(m => m.GetArtistAsync(artistName)).ReturnsAsync(artist);

@@ -32,11 +32,10 @@ namespace Lyrico.Testing.UnitTests
             const int year = 2021;
 
             //Test
-            var release = new Release(name, tracks, year);
+            var release = new Release(name, tracks);
 
             //Assert
             Assert.Equal(release.Name, name);
-            Assert.Equal(release.Year, year);
         }
 
         [Fact]
@@ -73,7 +72,7 @@ namespace Lyrico.Testing.UnitTests
         public void ReleaseCtor_EmptyName_ThrowsArgumentException(string name)
         {
             //Test
-            var exception = Assert.Throws<ArgumentException>(() => new Release(name, new List<Track>(), 2021 ));
+            var exception = Assert.Throws<ArgumentException>(() => new Release(name, new List<Track>() ));
 
             //Assert
             Assert.Equal("Value cannot be null or whitespace. (Parameter 'name')", exception.Message);

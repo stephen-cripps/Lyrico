@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Lyrico.Application;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -22,9 +23,16 @@ namespace Lyrico.Api.Controllers
         {
             var request = new GetLyricStats.Request() { ArtistName = artistName };
 
-            var response = await medaitor.Send(request);
+            try
+            {
+                var response = await medaitor.Send(request);
+                return new OkObjectResult(response);
+            }
+            catch (ApplicationException e)
+            {
+                return e.ToActionResult();
+            }
 
-            return new OkObjectResult(response); 
         }
     }
 }
