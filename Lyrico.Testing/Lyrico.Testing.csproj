@@ -16,9 +16,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Lyrico.Api\Lyrico.Api.csproj" />
     <ProjectReference Include="..\Lyrico.Application\Lyrico.Application.csproj" />
     <ProjectReference Include="..\Lyrico.Domain\Lyrico.Domain.csproj" />
-    <ProjectReference Include="..\Lyrico\Lyrico.Api.csproj" />
   </ItemGroup>
 
 </Project>

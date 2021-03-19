@@ -3,17 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29926.136
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lyrico.Api", "Lyrico\Lyrico.Api.csproj", "{958485B9-E7E6-45DD-B7FE-9C2C202DD284}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lyrico.Testing", "Lyrico.Testing\Lyrico.Testing.csproj", "{52AD7E05-6890-45E2-808C-6891A1AF0167}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lyrico.Testing", "Lyrico.Testing\Lyrico.Testing.csproj", "{52AD7E05-6890-45E2-808C-6891A1AF0167}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lyrico.Application", "Lyrico.Application\Lyrico.Application.csproj", "{E6793D9D-68C3-4C19-8B97-437072DBAFCB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lyrico.Application", "Lyrico.Application\Lyrico.Application.csproj", "{E6793D9D-68C3-4C19-8B97-437072DBAFCB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lyrico.Domain", "Lyrico.Domain\Lyrico.Domain.csproj", "{28A5CFF4-9F50-48B0-B5A5-6700E6CB739D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lyrico.Domain", "Lyrico.Domain\Lyrico.Domain.csproj", "{28A5CFF4-9F50-48B0-B5A5-6700E6CB739D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lyrico.MusicBrainz", "Lyrico.Artists\Lyrico.MusicBrainz.csproj", "{DECA4541-4BC6-4D40-A32A-CD5FB06AF08B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lyrico.MusicBrainz", "Lyrico.Artists\Lyrico.MusicBrainz.csproj", "{DECA4541-4BC6-4D40-A32A-CD5FB06AF08B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lyrico.Lyricsovh", "Lyrico.Lyrics\Lyrico.Lyricsovh.csproj", "{F9D85260-CC80-4710-BBB4-23C98173DD37}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lyrico.Lyricsovh", "Lyrico.Lyrics\Lyrico.Lyricsovh.csproj", "{F9D85260-CC80-4710-BBB4-23C98173DD37}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lyrico.Api", "Lyrico.Api\Lyrico.Api.csproj", "{D4EBD1B8-9ABB-45A2-868E-B43462E79A75}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,10 +21,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{958485B9-E7E6-45DD-B7FE-9C2C202DD284}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{958485B9-E7E6-45DD-B7FE-9C2C202DD284}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{958485B9-E7E6-45DD-B7FE-9C2C202DD284}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{958485B9-E7E6-45DD-B7FE-9C2C202DD284}.Release|Any CPU.Build.0 = Release|Any CPU
 		{52AD7E05-6890-45E2-808C-6891A1AF0167}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{52AD7E05-6890-45E2-808C-6891A1AF0167}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{52AD7E05-6890-45E2-808C-6891A1AF0167}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -45,6 +41,10 @@ Global
 		{F9D85260-CC80-4710-BBB4-23C98173DD37}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F9D85260-CC80-4710-BBB4-23C98173DD37}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F9D85260-CC80-4710-BBB4-23C98173DD37}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D4EBD1B8-9ABB-45A2-868E-B43462E79A75}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D4EBD1B8-9ABB-45A2-868E-B43462E79A75}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D4EBD1B8-9ABB-45A2-868E-B43462E79A75}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D4EBD1B8-9ABB-45A2-868E-B43462E79A75}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

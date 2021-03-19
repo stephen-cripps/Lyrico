@@ -171,7 +171,8 @@ namespace Lyrico.Testing.UnitTests
         }
 
         /// <summary>
-        /// Ensures it can handle the artist service being down 
+        /// Ensures it can handle the artist service being down
+        /// An equivalent has not been made for the lyric service, as it is so unreliable, exceptions are just caught and logged
         /// </summary>
         /// <returns></returns>
         [Fact]
