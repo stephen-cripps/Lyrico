@@ -5,7 +5,7 @@ This document contains an architectural overview of my solution to the technical
 This application has been designed with a domain-driven, clean architecture approach. I've focused on extensibility with each layer created as it's own project to help organise the code and to make it easier to switch out services should that be required. Dependency injection has been used through the solution to increase decoupling and testability.
 
 ## Presentation Layer
-I have built the presentation layer as a simple API. This was done as an easy way to run the application and send test requests. For a full application, this wouldn't make sense as it's making the application more talky than it needs to be. If I were building it as a web app, I would contact the services directly from the frontend, only having a backend if required for authorisation. If I were building it out as a desktop app, the application layer would be replaced with a WPF project. 
+I have built the presentation layer as a simple API. This was done as an easy way to run the application and send test requests. For a full application, this wouldn't make sense as its making the application more talky than it needs to be. If I were building it as a web app, I would contact the services directly from the frontend, only having a backend if required for authorisation. If I were building it out as a desktop app, the application layer would be replaced with a WPF project. 
 
 ## Application Layer
 The application layer has been built using vertical slice architecture. This allows the request to be completely decoupled from any other request if more were to be created (See the potential extensions section for examples of what these would be). I've used dependency inversion to access the MusicBrainz and lyrics.ovh apis. This allows these services to be replaced if required. 
@@ -31,14 +31,14 @@ For artists with a large catalogue, this application can take a while to run, du
 ## Handling lyrics service errors
 Currently, any lyric service errors, including not found songs, are simply logged. There is scope to record this information and return it to the user. 
 
-## More query options (Type, years, include duplicates, ect)
+## More query options (Type, years, include duplicates, etc.)
 Currently, the artist release search looks at all official albums. There are more options to query this, which could be input by the user.
 
 ## Rate limit from headers
 To avoid rate limiting on the artist service, I've included a basic 1000ms wait. Information about the rate limit is returned in the response headers, and this could be utilised to make this wait as small as possible. 
 
 ## Retry/Timeout on Lyric Requests
-As mentioned, the lyric service is unreliable and slow. There is scope to let users opt in to retrying failed lyric fetches, and also to allow users to set a timeout that would just perform the statistical analysis on the data it's managed to find within the alloted time. 
+As mentioned, the lyric service is unreliable and slow. There is scope to let users opt in to retrying failed lyric fetches, and also to allow users to set a timeout that would just perform the statistical analysis on the data it's managed to find within the allotted time. 
 
 ## A different Lyric API!
 A different lyric service could be used, such as the genius API. This would require authentication. 
@@ -88,4 +88,4 @@ artist |string|
  MusicBrainz.baseUrl | Base Url for musicbrainz api
  MusicBrainz.userAgent | Required by musicbrainz to identify who is making a request
   LyricsObh.baseUrl | Base Url for lyrics.ovh api
- LyricsObh.timout | Time in seconds to wait before cancelling a request to the lyric api | 60
+ LyricsObh.timeout | Time in seconds to wait before cancelling a request to the lyric api | 60
