@@ -3,6 +3,9 @@ using System.Collections.Generic;
 
 namespace Lyrico.Domain
 {
+    /// <summary>
+    /// Defines a release
+    /// </summary>
     public class Release
     {
         Release()

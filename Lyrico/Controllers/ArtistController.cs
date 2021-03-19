@@ -6,6 +6,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Lyrico.Api.Controllers
 {
+    /// <summary>
+    /// Handles all artist-related requests
+    /// </summary>
     [ApiController]
     [Route("Artists")]
     public class ArtistController : ControllerBase
@@ -17,6 +20,11 @@ namespace Lyrico.Api.Controllers
             this.medaitor = medaitor;
         }
 
+        /// <summary>
+        /// Returns a set of lyric word count statistics for a given artist
+        /// </summary>
+        /// <param name="artistName"></param>
+        /// <returns></returns>
         [HttpGet]
         [Route("LyricStats")]
         public async Task<IActionResult> GetLyricStats(string artistName)

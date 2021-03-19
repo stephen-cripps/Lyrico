@@ -3,8 +3,16 @@ using System.Linq;
 
 namespace Lyrico.Application.Extensions
 {
+    /// <summary>
+    /// A set of methods for mathematical analysis ofg an iEnumerable
+    /// </summary>
     public static class EnumerableExtensions
     {
+        /// <summary>
+        /// Finds the median number of an enumerable
+        /// </summary>
+        /// <param name="enumerable"></param>
+        /// <returns></returns>
         public static double? Median(this IEnumerable<uint> enumerable)
         {
             var cloned = new List<uint>(enumerable)
@@ -22,12 +30,23 @@ namespace Lyrico.Application.Extensions
             return (cloned[(int)(mid)] + cloned[(int)(mid + 0.5)]) / 2.0;
         }
 
+        /// <summary>
+        /// Finds the population variance of a given enumerable
+        /// </summary>
+        /// <param name="enumerable"></param>
+        /// <returns></returns>
         public static double? PopulationVariance(this IEnumerable<uint> enumerable)
         {
             var list = enumerable.ToList();
             return list.Count == 0 ? null : PopulationVariance(list, list.Average(i => i));
         }
 
+        /// <summary>
+        /// Finds the population variance of a given enumerable. To be used if the mean has already been calculated 
+        /// </summary>
+        /// <param name="enumerable"></param>
+        /// <param name="mean"></param>
+        /// <returns></returns>
         public static double? PopulationVariance(this IEnumerable<uint> enumerable, double mean)
         {
             var list = enumerable.ToList();

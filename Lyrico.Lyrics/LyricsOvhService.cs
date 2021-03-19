@@ -7,6 +7,9 @@ using Newtonsoft.Json;
 
 namespace Lyrico.Lyricsovh
 {
+    /// <summary>
+    /// Accesses the LyricsOvh api
+    /// </summary>
     public class LyricsOvhService : ILyricService
     {
         readonly HttpClient client;
@@ -20,6 +23,12 @@ namespace Lyrico.Lyricsovh
             };
         }
 
+        /// <summary>
+        /// Sends a request for lyrics then counts the words
+        /// </summary>
+        /// <param name="artistName"></param>
+        /// <param name="songName"></param>
+        /// <returns></returns>
         public async Task<uint?> GetLyricCountAsync(string artistName, string songName)
         {
             string lyrics;
@@ -42,6 +51,12 @@ namespace Lyrico.Lyricsovh
             return (uint?)count;
         }
 
+        /// <summary>
+        /// Sends a request to the service to get lyrics
+        /// </summary>
+        /// <param name="artistName"></param>
+        /// <param name="songName"></param>
+        /// <returns></returns>
         async Task<string> GetLyrics(string artistName, string songName)
         {
             var path = $"{artistName}/{songName}";
@@ -53,6 +68,9 @@ namespace Lyrico.Lyricsovh
             return JsonConvert.DeserializeObject<LyricResponse>(await response.Content.ReadAsStringAsync()).Lyrics;
         }
 
+        /// <summary>
+        /// Defines the response from the API
+        /// </summary>
         class LyricResponse
         {
             public string Lyrics { get; set; }

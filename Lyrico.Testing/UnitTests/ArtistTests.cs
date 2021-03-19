@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Lyrico.Domain;
 using Xunit;
 
@@ -10,48 +11,35 @@ namespace Lyrico.Testing.UnitTests
     /// </summary>
     public class ArtistTests
     {
-        [Fact]
-        public void TrackCtor_ValidInputs_CreatesTrack()
-        {
-            //Arrange
-            const string name = "Test Name";
 
-            //Test
-            var track = new Track(name);
-
-            //Assert
-            Assert.Equal(name, track.Name);
-        }
-
-        [Fact]
-        public void ReleaseCtor_ValidInputs_CreatesRelease()
-        {
-            //Arrange
-            const string name = "Test Name";
-            var tracks = new List<Track>();
-            const int year = 2021;
-
-            //Test
-            var release = new Release(name, tracks);
-
-            //Assert
-            Assert.Equal(release.Name, name);
-        }
-
+        /// <summary>
+        /// Tests successful instantiation of a the artist aggregate release
+        /// </summary>
         [Fact]
         public void ArtistCtor_ValidInputs_CreatesArtist()
         {
             //Arrange
-            const string name = "Test Name";
-            var releases = new List<Release>();
+            const string artistName = "Artist Name";
+            const string releaseName = "Release Name";
+            const string trackName = "Track Name";
 
             //Test
-            var artist = new Artist(name, releases);
+            var tracks = new List<Track>() { new Track(trackName) };
+            var releases = new List<Release>() { new Release(releaseName, tracks) };
+            var artist = new Artist(artistName, releases);
 
             //Assert
-            Assert.Equal(artist.Name, name);
+            Assert.Equal(artistName, artist.Name);
+            var artistReleases = artist.Releases.Single();
+            Assert.Equal(releaseName, artistReleases.Name);
+            var artistTracks = artistReleases.TrackList.Single();
+            Assert.Equal(trackName, artistTracks.Name);
         }
 
+        /// <summary>
+        /// Checks validation of track name
+        /// </summary>
+        /// <param name="name"></param>
         [Theory]
         [InlineData(null)]
         [InlineData("")]
@@ -65,6 +53,10 @@ namespace Lyrico.Testing.UnitTests
             Assert.Equal("Value cannot be null or whitespace. (Parameter 'name')", exception.Message);
         }
 
+        /// <summary>
+        /// Checks validation of Release name
+        /// </summary>
+        /// <param name="name"></param>
         [Theory]
         [InlineData(null)]
         [InlineData("")]
@@ -72,12 +64,16 @@ namespace Lyrico.Testing.UnitTests
         public void ReleaseCtor_EmptyName_ThrowsArgumentException(string name)
         {
             //Test
-            var exception = Assert.Throws<ArgumentException>(() => new Release(name, new List<Track>() ));
+            var exception = Assert.Throws<ArgumentException>(() => new Release(name, new List<Track>()));
 
             //Assert
             Assert.Equal("Value cannot be null or whitespace. (Parameter 'name')", exception.Message);
         }
 
+        /// <summary>
+        /// Checks validation of Artist name
+        /// </summary>
+        /// <param name="name"></param>
         [Theory]
         [InlineData(null)]
         [InlineData("")]

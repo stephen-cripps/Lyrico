@@ -12,13 +12,22 @@ using MediatR;
 
 namespace Lyrico.Application
 {
+    /// <summary>
+    /// vertical slice to handle finding lyric stats for a given artist
+    /// </summary>
     public class GetLyricStats
     {
+        /// <summary>
+        /// Defines the input
+        /// </summary>
         public class Request : IRequest<Result>
         {
             public string ArtistName { get; set; }
         }
 
+        /// <summary>
+        /// Defines the output
+        /// </summary>
         public class Result
         {
             public int SongsWithLyricsFound { get; set; }
@@ -29,6 +38,9 @@ namespace Lyrico.Application
             public Dictionary<string, double?> MeanByRelease { get; set; }
         }
 
+        /// <summary>
+        /// Handles the request
+        /// </summary>
         public class Handler : IRequestHandler<Request, Result>
         {
             readonly IArtistService artistService;
@@ -40,6 +52,12 @@ namespace Lyrico.Application
                 this.lyricService = lyricService;
             }
 
+            /// <summary>
+            /// Finds the artist, finds the word count for each song, returns a set of statistics on those word counts
+            /// </summary>
+            /// <param name="request"></param>
+            /// <param name="cancellationToken"></param>
+            /// <returns></returns>
             public async Task<Result> Handle(Request request, CancellationToken cancellationToken)
             {
                 var artist = await FindArtist(request.ArtistName);
@@ -52,7 +70,11 @@ namespace Lyrico.Application
                 return CalculateStats(artist);
             }
 
-
+            /// <summary>
+            /// Finds an artist in the artist service
+            /// </summary>
+            /// <param name="name"></param>
+            /// <returns></returns>
             async Task<Artist> FindArtist(string name)
             {
                 try
@@ -65,6 +87,11 @@ namespace Lyrico.Application
                 }
             }
 
+            /// <summary>
+            /// Asynchronously populates the wordcounts of each track, ignoring duplicate song names
+            /// </summary>
+            /// <param name="artist"></param>
+            /// <returns></returns>
             async Task PopulateWordCount(Artist artist)
             {
                 var tracks = artist.Releases
@@ -76,11 +103,22 @@ namespace Lyrico.Application
                 await Task.WhenAll(tasks);
             }
 
+            /// <summary>
+            /// Task to assign the wordcount
+            /// </summary>
+            /// <param name="artistName"></param>
+            /// <param name="track"></param>
+            /// <returns></returns>
             async Task AssignWordCount(string artistName, Track track)
             {
                 track.Wordcount = await lyricService.GetLyricCountAsync(artistName, track.Name);
             }
 
+            /// <summary>
+            /// Calculates mean, median, variance, standard deviation and mean by album
+            /// </summary>
+            /// <param name="artist"></param>
+            /// <returns></returns>
             Result CalculateStats(Artist artist)
             {
                 var wordCounts = artist.Releases
@@ -111,6 +149,9 @@ namespace Lyrico.Application
 
         }
 
+        /// <summary>
+        /// Used to define a comparison between tracks so that duplicates are removed
+        /// </summary>
         class TrackNameComparer : IEqualityComparer<Track>
         {
             public bool Equals(Track x, Track y) => string.Equals(x.Name, y.Name, StringComparison.CurrentCultureIgnoreCase);

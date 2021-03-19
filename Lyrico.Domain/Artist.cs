@@ -3,6 +3,9 @@ using System.Collections.Generic;
 
 namespace Lyrico.Domain
 {
+    /// <summary>
+    /// Aggregate root for an artist
+    /// </summary>
     public class Artist
     {
         Artist()

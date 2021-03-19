@@ -2,6 +2,9 @@
 
 namespace Lyrico.Domain
 {
+    /// <summary>
+    /// Defines a track
+    /// </summary>
     public class Track
     {
         Track() 

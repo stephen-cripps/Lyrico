@@ -4,6 +4,9 @@ using Lyrico.MusicBrainz.DTOs;
 
 namespace Lyrico.MusicBrainz.DependencyInjection
 {
+    /// <summary>
+    /// Defines a mapping between the DTO and domain model
+    /// </summary>
     public class MappingProfile : Profile
     {
         public MappingProfile()

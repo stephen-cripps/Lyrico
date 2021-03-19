@@ -69,6 +69,10 @@ namespace Lyrico.Testing.UnitTests
             Assert.Equal(500, result.MeanByRelease["R2"]);
         }
 
+        /// <summary>
+        /// Ensures it can handle an artist with no releases
+        /// </summary>
+        /// <returns></returns>
         [Fact]
         public async Task Handle_ArtistFoundNoReleases_ReturnsNullStats()
         {
@@ -92,6 +96,10 @@ namespace Lyrico.Testing.UnitTests
             Assert.Null(result.MeanByRelease);
         }
 
+        /// <summary>
+        /// Ensures it can handle an aritst with no tracks
+        /// </summary>
+        /// <returns></returns>
         [Fact]
         public async Task Handle_ArtistFoundNoTracks_ReturnsNullStats()
         {
@@ -110,6 +118,10 @@ namespace Lyrico.Testing.UnitTests
             Assert.Null(result.MeanByRelease);
         }
 
+        /// <summary>
+        /// Ensures it can handle artists with no lyrics
+        /// </summary>
+        /// <returns></returns>
         [Fact]
         public async Task Handle_ArtistFoundLyricsNotFound_ReturnsNullStats()
         {
@@ -140,7 +152,10 @@ namespace Lyrico.Testing.UnitTests
             Assert.Null(result.MeanByRelease);
         }
 
-
+        /// <summary>
+        /// Ensures it can handle not fiunding an aritst
+        /// </summary>
+        /// <returns></returns>
         [Fact]
         public async Task Handle_ArtistNotFound_ThrowArtistNotFoundException()
         {
@@ -155,6 +170,10 @@ namespace Lyrico.Testing.UnitTests
 
         }
 
+        /// <summary>
+        /// Ensures it can handle the artist service being down 
+        /// </summary>
+        /// <returns></returns>
         [Fact]
         public async Task Handle_ArtistServiceNotAvailable_ThrowsServiceUnavailableException()
         {

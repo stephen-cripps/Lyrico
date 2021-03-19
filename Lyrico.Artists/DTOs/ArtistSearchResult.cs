@@ -3,6 +3,9 @@ using Newtonsoft.Json;
 
 namespace Lyrico.MusicBrainz.DTOs
 {
+    /// <summary>
+    /// Object classes to deserlialise results from the service into
+    /// </summary>
     public class ArtistSearchResult
     {
         public IEnumerable<ArtistDto> Artists { get; set; }

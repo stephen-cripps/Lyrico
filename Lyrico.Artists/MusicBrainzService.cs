@@ -13,6 +13,9 @@ using Options = Lyrico.MusicBrainz.DependencyInjection.Options;
 
 namespace Lyrico.MusicBrainz
 {
+    /// <summary>
+    /// Used to access the MusicBrainzAPI
+    /// </summary>
     public class MusicBrainzService : IArtistService
     {
         readonly IMapper mapper;
@@ -27,6 +30,11 @@ namespace Lyrico.MusicBrainz
             client.DefaultRequestHeaders.Add("User-Agent", options.Value.UserAgent);
         }
 
+        /// <summary>
+        /// Find an artist, gets a list of releases, removes duplicates, gets a list of tracks
+        /// </summary>
+        /// <param name="artistName"></param>
+        /// <returns></returns>
         public async Task<Artist> GetArtistAsync(string artistName)
         {
             var artist = await SearchArtist(artistName);
@@ -39,7 +47,6 @@ namespace Lyrico.MusicBrainz
             artist.Releases = (await GetReleases(artist.Id)).Distinct(new ReleaseNameComparer());
             Console.WriteLine("Releases Read");
 
-            // I'm removing duplicates to make debugging faster
             foreach (var release in artist.Releases)
             {
                 release.Recordings = await GetRecordings(release.Id);
@@ -49,6 +56,11 @@ namespace Lyrico.MusicBrainz
             return mapper.Map<Artist>(artist);
         }
 
+        /// <summary>
+        /// Returns the first Artist Search result
+        /// </summary>
+        /// <param name="artistName"></param>
+        /// <returns></returns>
         async Task<ArtistDto> SearchArtist(string artistName)
         {
             var path = $"artist?query=artist:{artistName}&fmt=json&limit=1";
@@ -65,7 +77,14 @@ namespace Lyrico.MusicBrainz
             return firstArtist;
         }
 
-
+        /// <summary>
+        /// Returns an artist's releases
+        /// Returns just official albums
+        /// Paginated results, getting 25 at  time
+        /// Includes 100ms delay between requests to avoid rate limiting
+        /// </summary>
+        /// <param name="artistId"></param>
+        /// <returns></returns>
         async Task<IEnumerable<ReleaseDto>> GetReleases(string artistId)
         {
             var offset = 0;
@@ -74,10 +93,8 @@ namespace Lyrico.MusicBrainz
             var releases = new List<ReleaseDto>();
             while (releases.Count < releaseCount)
             {
-                System.Threading.Thread.Sleep(1000); //To avoid rate limiting
+                System.Threading.Thread.Sleep(1000); 
 
-                //I'm looking at just official albums to keep the number of results down 
-                // I don't think there's a way to ignore live albums without doing extra calls to the bakend
                 var path = $"release?artist={artistId}&type=album&status=official&fmt=json&offset={offset}";
                 var response = await client.GetAsync(path);
 
@@ -94,6 +111,13 @@ namespace Lyrico.MusicBrainz
             return releases;
         }
 
+        /// <summary>
+        /// Returns all recordings on a release
+        /// Paginated results, getting 25 at  time
+        /// Includes 100ms delay between requests to avoid rate limiting
+        /// </summary>
+        /// <param name="releaseId"></param>
+        /// <returns></returns>
         async Task<IEnumerable<RecordingDto>> GetRecordings(string releaseId)
         {
             var offset = 0;
@@ -120,6 +144,9 @@ namespace Lyrico.MusicBrainz
             return recordings; 
         }
 
+        /// <summary>
+        /// Defines a way to check for duplicate releases
+        /// </summary>
         class ReleaseNameComparer : IEqualityComparer<ReleaseDto>
         {
             public bool Equals(ReleaseDto x, ReleaseDto y) => string.Equals(x.Title, y.Title, StringComparison.CurrentCultureIgnoreCase);
