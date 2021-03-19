@@ -19,7 +19,7 @@ namespace Lyrico.Lyricsovh
             client = new HttpClient
             {
                 BaseAddress = new Uri(options.Value.BaseUrl),
-                Timeout = TimeSpan.FromSeconds(300)
+                Timeout = TimeSpan.FromSeconds(options.Value.Timeout)
             };
         }
 

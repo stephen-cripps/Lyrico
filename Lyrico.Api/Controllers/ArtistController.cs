@@ -34,6 +34,9 @@ namespace Lyrico.Api.Controllers
             try
             {
                 var response = await medaitor.Send(request);
+
+                Console.WriteLine("Request Complete");
+
                 return new OkObjectResult(response);
             }
             catch (ApplicationException e)

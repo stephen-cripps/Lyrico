@@ -72,7 +72,7 @@ namespace Lyrico.MusicBrainz
 
             var deserialisedResult = JsonConvert.DeserializeObject<ArtistSearchResult>(await response.Content.ReadAsStringAsync());
 
-            var firstArtist = deserialisedResult.Artists.FirstOrDefault(a => a.Name == artistName);
+            var firstArtist = deserialisedResult.Artists.FirstOrDefault(a => string.Equals(a.Name, artistName, StringComparison.CurrentCultureIgnoreCase));
 
             return firstArtist;
         }
